@@ -27,18 +27,6 @@
       .popup {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       }
-      body.nezhamode .popup {
-        background-color: #331a22;
-        border-left: 3px solid #d946ef;
-      }
-      body.gangjingmode .popup {
-        background-color: #1a2233;
-        border-left: 3px solid #6366f1;
-      }
-      body.normalmode .popup {
-        background-color: #1a3322;
-        border-left: 3px solid #10b981;
-      }
     }
     @media (prefers-color-scheme: light) {
       body {
@@ -47,18 +35,6 @@
       }
       .popup {
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-      body.nezhamode .popup {
-        background-color: #fff0f5;
-        border-left: 3px solid #f472b6;
-      }
-      body.gangjingmode .popup {
-        background-color: #e0efff;
-        border-left: 3px solid #60a5fa;
-      }
-      body.normalmode .popup {
-        background-color: #e0ffe9;
-        border-left: 3px solid #4ade80;
       }
     }
 
@@ -130,7 +106,7 @@
       box-shadow: 0 4px 12px var(--shadow);
     }
 
-    /* 马卡龙配色方案 */
+    /* 马卡龙配色方案（按钮） */
     .char-btn.nezhacolor {
       --light: #ffe0e9;
       --lighter: #fff0f5;
@@ -174,8 +150,8 @@
       position: absolute;
       border-radius: 6px;
       padding: 6px 10px;
-      max-width: 140px; /* 缩小后宽度 */
-      font-size: 11px; /* 缩小字体 */
+      max-width: 140px;
+      font-size: 11px;
       line-height: 1.4;
       opacity: 0;
       animation: fadeIn 0.3s forwards;
@@ -199,7 +175,7 @@
       }
     }
 
-    /* 弹窗淡出动画 */
+    /* 弹窗淡出动画（加快消失速度） */
     @keyframes fadeOut {
       from {
         opacity: 1;
@@ -212,7 +188,37 @@
     }
 
     .popup.fade-out {
-      animation: fadeOut 0.4s forwards;
+      animation: fadeOut 0.2s forwards;
+    }
+
+    /* 马卡龙浅色配色（弹窗专用，12种不同色调） */
+    .popup-color-1 { background-color: #fff0f5; border-left: 3px solid #f472b6; color: #7f1d1d; }
+    .popup-color-2 { background-color: #f0f8ff; border-left: 3px solid #60a5fa; color: #1e3a8a; }
+    .popup-color-3 { background-color: #e0ffe9; border-left: 3px solid #4ade80; color: #14532d; }
+    .popup-color-4 { background-color: #fefce8; border-left: 3px solid #facc15; color: #78350f; }
+    .popup-color-5 { background-color: #f5fafe; border-left: 3px solid #38bdf8; color: #083344; }
+    .popup-color-6 { background-color: #fcf1f7; border-left: 3px solid #db2777; color: #7f1d1d; }
+    .popup-color-7 { background-color: #e6fffa; border-left: 3px solid #2dd4bf; color: #065f46; }
+    .popup-color-8 { background-color: #fff7ed; border-left: 3px solid #fb923c; color: #7c2d12; }
+    .popup-color-9 { background-color: #f3e8ff; border-left: 3px solid #a78bfa; color: #4c1d95; }
+    .popup-color-10 { background-color: #e8f4f8; border-left: 3px solid #2563eb; color: #1e3a8a; }
+    .popup-color-11 { background-color: #f0fdf4; border-left: 3px solid #10b981; color: #065f46; }
+    .popup-color-12 { background-color: #fffbeb; border-left: 3px solid #fbbf24; color: #92400e; }
+
+    /* 深色模式弹窗配色适配 */
+    @media (prefers-color-scheme: dark) {
+      .popup-color-1 { background-color: #331a22; border-left: 3px solid #d946ef; color: #fecdd3; }
+      .popup-color-2 { background-color: #1a2233; border-left: 3px solid #6366f1; color: #bfdbfe; }
+      .popup-color-3 { background-color: #1a3322; border-left: 3px solid #10b981; color: #bbf7d0; }
+      .popup-color-4 { background-color: #332c1e; border-left: 3px solid #ca8a04; color: #fde68a; }
+      .popup-color-5 { background-color: #1a2d35; border-left: 3px solid #0ea5e9; color: #7dd3fc; }
+      .popup-color-6 { background-color: #331f2b; border-left: 3px solid #be185d; color: #fecdd3; }
+      .popup-color-7 { background-color: #1a352d; border-left: 3px solid #0d9488; color: #5eead4; }
+      .popup-color-8 { background-color: #332718; border-left: 3px solid #ea580c; color: #fed7aa; }
+      .popup-color-9 { background-color: #2d1f42; border-left: 3px solid #8b5cf6; color: #c4b5fd; }
+      .popup-color-10 { background-color: #1a2340; border-left: 3px solid #1d4ed8; color: #bfdbfe; }
+      .popup-color-11 { background-color: #1a352d; border-left: 3px solid #059669; color: #bbf7d0; }
+      .popup-color-12 { background-color: #332710; border-left: 3px solid #d97706; color: #fef3c7; }
     }
   </style>
 </head>
@@ -224,7 +230,7 @@
       <div class="character-buttons">
         <button class="char-btn nezhacolor" data-character="nezha">哪吒</button>
         <button class="char-btn gangjingcolor" data-character="gangjing">杠精</button>
-        <button class="char-btn normalcolor" data-character="normal">普通</button>
+        <button class="char-btn normalcolor" data-character="normal">普通人</button>
       </div>
     </div>
   </div>
@@ -292,75 +298,67 @@
       normal: "💌"
     };
 
+    // 弹窗马卡龙配色类名（12种不同颜色）
+    const popupColorClasses = [
+      'popup-color-1', 'popup-color-2', 'popup-color-3',
+      'popup-color-4', 'popup-color-5', 'popup-color-6',
+      'popup-color-7', 'popup-color-8', 'popup-color-9',
+      'popup-color-10', 'popup-color-11', 'popup-color-12'
+    ];
+
     let currentCharacter = null;
     let popupInterval = null;
-    let popups = []; // 存储所有弹窗（按生成顺序排列，先入先出）
-    const maxFillRate = 98; // 最大填充率98%
-    const maxOverlapRatio = 0.5; // 最大重叠比例50%
-    const popupSize = { width: 140, height: 50 }; // 弹窗固定尺寸（与CSS匹配）
+    let popups = [];
+    const maxFillRate = 98;
+    const maxOverlapRatio = 0.5;
+    const popupSize = { width: 140, height: 50 };
 
     // 选择性格后初始化
     document.querySelectorAll('.char-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         currentCharacter = this.getAttribute('data-character');
-        // 隐藏选择框
         document.getElementById('selectorContainer').style.opacity = 0;
         setTimeout(() => {
           document.getElementById('selectorContainer').remove();
-          // 设置页面模式
-          document.body.classList.add(`${currentCharacter}mode`);
-          // 开始生成弹窗
           startPopupSystem();
         }, 300);
       });
     });
 
-    // 计算两个矩形的重叠比例（新弹窗面积为基准）
+    // 计算重叠比例
     function calculateOverlapRatio(newRect, existingRect) {
-      // 计算交集区域
       const overlapLeft = Math.max(newRect.left, existingRect.left);
       const overlapTop = Math.max(newRect.top, existingRect.top);
       const overlapRight = Math.min(newRect.right, existingRect.right);
       const overlapBottom = Math.min(newRect.bottom, existingRect.bottom);
 
-      // 无重叠
-      if (overlapLeft >= overlapRight || overlapTop >= overlapBottom) {
-        return 0;
-      }
+      if (overlapLeft >= overlapRight || overlapTop >= overlapBottom) return 0;
 
-      // 计算重叠面积和新弹窗面积
       const overlapArea = (overlapRight - overlapLeft) * (overlapBottom - overlapTop);
       const newPopupArea = (newRect.right - newRect.left) * (newRect.bottom - newRect.top);
-
-      // 返回重叠比例（不超过100%）
       return Math.min(1, overlapArea / newPopupArea);
     }
 
-    // 检查新弹窗位置是否符合重叠要求
+    // 检查位置有效性
     function isPositionValid(newRect) {
-      // 遍历已有弹窗，检查是否有超过50%的重叠
       for (const item of popups) {
         const existingRect = item.element.getBoundingClientRect();
         const overlapRatio = calculateOverlapRatio(newRect, existingRect);
-        if (overlapRatio > maxOverlapRatio) {
-          return false;
-        }
+        if (overlapRatio > maxOverlapRatio) return false;
       }
       return true;
     }
 
-    // 生成有效位置（避免过度重叠）
+    // 获取有效位置
     function getValidPosition() {
       const maxLeft = window.innerWidth - popupSize.width;
       const maxTop = window.innerHeight - popupSize.height;
-      const maxAttempts = 30; // 尝试次数，确保能找到有效位置
+      const maxAttempts = 30;
 
       for (let i = 0; i < maxAttempts; i++) {
-        // 随机生成位置
         const left = Math.random() * maxLeft;
         const top = Math.random() * maxTop;
 
-        // 构建新弹窗的矩形区域
         const newRect = {
           left,
           top,
@@ -368,25 +366,32 @@
           bottom: top + popupSize.height
         };
 
-        // 检查位置是否有效
         if (isPositionValid(newRect)) {
           return { left, top };
         }
       }
 
-      // 多次尝试失败后，返回随机位置（避免卡死）
       return {
         left: Math.random() * maxLeft,
         top: Math.random() * maxTop
       };
     }
 
-    // 创建弹窗（记录生成顺序，避免过度重叠）
+    // 创建弹窗（随机马卡龙配色）
     function createPopup() {
       if (!currentCharacter) return;
 
+      if (calculateFillRate() >= maxFillRate) {
+        removeExcessPopups();
+        return;
+      }
+
       const popup = document.createElement('div');
       popup.className = 'popup';
+      
+      // 随机选择马卡龙配色
+      const randomColorClass = popupColorClasses[Math.floor(Math.random() * popupColorClasses.length)];
+      popup.classList.add(randomColorClass);
       
       // 随机选择语录
       const quoteList = quotes[currentCharacter];
@@ -395,12 +400,12 @@
       // 设置内容
       popup.innerHTML = `<span class="prefix">${prefixes[currentCharacter]}</span>${randomQuote}`;
       
-      // 获取有效位置（避免重叠超过50%）
+      // 获取有效位置
       const { left, top } = getValidPosition();
       popup.style.left = `${left}px`;
       popup.style.top = `${top}px`;
       
-      // 添加到页面和数组（新弹窗追加到末尾）
+      // 添加到页面和数组
       document.body.appendChild(popup);
       popups.push({
         element: popup,
@@ -411,7 +416,6 @@
       popup.addEventListener('animationend', function(e) {
         if (e.animationName === 'fadeOut') {
           popup.remove();
-          // 从数组中移除（对应先生成的元素）
           popups = popups.filter(item => item.element !== popup);
         }
       });
@@ -432,19 +436,17 @@
       return (totalPopupArea / screenArea) * 100;
     }
 
-    // 移除多余弹窗（仅删先生成的，保留新生成的）
+    // 移除多余弹窗
     function removeExcessPopups() {
       const currentFillRate = calculateFillRate();
       if (currentFillRate >= maxFillRate) {
-        // 计算需要移除的弹窗数量（按超出比例计算）
         const excessRatio = currentFillRate / maxFillRate;
-        const removeCount = Math.ceil(popups.length * (excessRatio - 1) * 1.5); // 平衡移除数量
+        const removeCount = Math.ceil(popups.length * (excessRatio - 0.05) * 2);
         
         if (removeCount > 0 && popups.length > 0) {
-          // 移除数组前N个（先生成的）弹窗
           for (let i = 0; i < removeCount; i++) {
             if (popups.length === 0) break;
-            const oldestPopup = popups[0]; // 取第一个（最早生成）
+            const oldestPopup = popups[0];
             oldestPopup.element.classList.add('fade-out');
           }
         }
@@ -453,12 +455,10 @@
 
     // 启动弹窗系统
     function startPopupSystem() {
-      // 初始生成一批弹窗（快速填充）
       for (let i = 0; i < 15; i++) {
         createPopup();
       }
       
-      // 持续生成弹窗并检查填充率（80ms/个，7秒内达98%）
       popupInterval = setInterval(() => {
         createPopup();
         removeExcessPopups();
@@ -477,8 +477,10 @@
         popup.style.left = `${left}px`;
         popup.style.top = `${top}px`;
       });
-      removeExcessPopups(); // 窗口变化后重新检查填充率
+      removeExcessPopups();
     });
   </script>
+  <h6>Copyright © 2025 zzj</h6>
+  
 </body>
 </html>
