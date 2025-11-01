@@ -1,120 +1,386 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>神秘万圣节礼物·祝福语弹窗</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>性格语录弹窗</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      transition: all 0.3s ease;
     }
+
     body {
-      background-color: #f0f2f5;
-      overflow: hidden; /* 隐藏超出页面的弹窗 */
+      overflow: hidden;
+      font-family: "Microsoft YaHei", sans-serif;
+      background-color: #f5f5f5;
+      height: 100vh;
     }
+
+    /* 性格选择框样式 */
+    .selector-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.9);
+      z-index: 1000;
+    }
+
+    .character-selector {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      max-width: 380px;
+      width: 90%;
+    }
+
+    .selector-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    .character-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .char-btn {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #333;
+      background: linear-gradient(135deg, var(--light), var(--lighter));
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    /* 马卡龙配色方案 */
+    .char-btn.nezhacolor {
+      --light: #ffe0e9;
+      --lighter: #fff0f5;
+      --shadow: rgba(255, 105, 135, 0.15);
+    }
+
+    .char-btn.gangjingcolor {
+      --light: #e0efff;
+      --lighter: #f0f8ff;
+      --shadow: rgba(96, 165, 250, 0.15);
+    }
+
+    .char-btn.normalcolor {
+      --light: #e0ffe9;
+      --lighter: #f0fff5;
+      --shadow: rgba(74, 222, 128, 0.15);
+    }
+
+    .char-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px var(--shadow);
+    }
+
+    /* 弹窗样式 */
     .popup {
       position: absolute;
-      background: linear-gradient(135deg, #ffd1dc, #d1f5ff, #d1ffd9); /* 渐变背景 */
       border-radius: 8px;
-      padding: 12px 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      animation: fadeInUp 0.5s ease-out forwards, fadeOut 0.5s ease-in 5s forwards; /* 弹出+消失动画 */
+      padding: 10px 16px;
+      max-width: 220px;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      animation: fadeIn 0.3s forwards;
     }
-    .popup .title {
-      color: #e91e63;
-      font-weight: bold;
-      margin-bottom: 6px;
+
+    .popup .prefix {
+      font-size: 12px;
+      margin-right: 5px;
+      vertical-align: middle;
     }
-    .popup .content {
-      font-size: 16px;
-    }
-    @keyframes fadeInUp {
+
+    /* 弹窗淡入动画 */
+    @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px) scale(0.95);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
       }
     }
+
+    /* 弹窗淡出动画 */
+    .popup.fade-out {
+      animation: fadeOut 0.5s forwards;
+    }
+
     @keyframes fadeOut {
       from {
         opacity: 1;
+        transform: translateY(0) scale(1);
       }
       to {
         opacity: 0;
+        transform: translateY(-10px) scale(0.95);
       }
+    }
+
+    /* 三种性格的配色体系 */
+    /* 哪吒：粉系 */
+    body.nezhamode {
+      background-color: #fff5f7;
+    }
+
+    body.nezhamode .popup {
+      background-color: #fff0f5;
+      color: #d946ef;
+      border-left: 3px solid #f472b6;
+    }
+
+    /* 杠精：蓝系 */
+    body.gangjingmode {
+      background-color: #f0f8ff;
+    }
+
+    body.gangjingmode .popup {
+      background-color: #e0efff;
+      color: #6366f1;
+      border-left: 3px solid #60a5fa;
+    }
+
+    /* 普通人：绿系 */
+    body.normalmode {
+      background-color: #f0fff5;
+    }
+
+    body.normalmode .popup {
+      background-color: #e0ffe9;
+      color: #10b981;
+      border-left: 3px solid #4ade80;
     }
   </style>
 </head>
 <body>
-  <script>
-    // 祝福语列表
-    const messages = [
-      "早点休息",
-      "好好爱自己",
-      "天冷了，多穿衣服",
-      "今天过得开心嘛",
-      "你超棒的",
-      "保持微笑呀",
-      "我想你了",
-      "学会爱自己，才能更好地爱别人",
-      "保持好心情",
-      "记得吃水果",
-      "你是独一无二的",
-      "今天也要加油哦",
-      "别熬夜，对身体不好",
-      "要天天开心呀",
-    ];
+  <!-- 性格选择框 -->
+  <div class="selector-container" id="selectorContainer">
+    <div class="character-selector">
+      <div class="selector-title">选择人物性格</div>
+      <div class="character-buttons">
+        <button class="char-btn nezhacolor" data-character="nezha">哪吒（逆命霸气）</button>
+        <button class="char-btn gangjingcolor" data-character="gangjing">杠精（怼天怼地）</button>
+        <button class="char-btn normalcolor" data-character="normal">普通人（温馨问候）</button>
+      </div>
+    </div>
+  </div>
 
-    // 随机生成弹窗的位置、颜色和内容
+  <script>
+    // 语录库
+    const quotes = {
+      nezha: [
+        "我命由我不由天！",
+        "是魔是仙，我自己说了才算！",
+        "别人的看法，我不在乎！",
+        "天命？我偏要逆天而行！",
+        "不服就干，哪来那么多废话！",
+        "我哪吒，从不认命！",
+        "想捆住我？没门！",
+        "你们说我是魔，我就魔给你们看！",
+        "混天绫在手，天下我有！",
+        "别用你们的规矩，框住我！",
+        "我就是我，不一样的烟火！",
+        "天要压我，我便捅破天！",
+        "命？我自己改，不用你管！",
+        "是非黑白，我自己判断！",
+        "我命由我，天奈我何？"
+      ],
+      gangjing: [
+        "弱者的哀嚎，真刺耳！",
+        "规则？老子就是规则！",
+        "空气都比你们懂事儿！",
+        "就这？也配挡我的路？",
+        "无聊透顶，来点乐子啊！",
+        "你们的挣扎，真可笑！",
+        "垃圾就该待在垃圾桶里！",
+        "别来沾边，嫌你烦！",
+        "一群蝼蚁，也敢叫嚣？",
+        "我怼的不是人，是愚蠢！",
+        "顺我者昌，逆我者亡！",
+        "别浪费我的时间，蠢货！",
+        "连空气都比你有存在感！",
+        "不服？来打我啊！",
+        "庸人自扰，可笑至极！"
+      ],
+      normal: [
+        "祝你今天事事顺心，心情满分！",
+        "最近天气变化大，记得照顾好自己",
+        "有空约着聚聚呀，好久没一起聊天了",
+        "累了就适当休息，别硬扛",
+        "记得按时吃饭，别凑活一顿",
+        "祝你学业/工作顺利，收获满满",
+        "多出去走走，放松心情也不错",
+        "有你这个朋友，挺幸运的",
+        "愿你每天都有小惊喜，烦恼少少",
+        "照顾好身体，健康最重要啦",
+        "遇到喜欢的事就去做，别犹豫",
+        "和你相处很舒服，希望一直这样",
+        "遇到挫折也别怕，总会过去的",
+        "愿你被世界温柔以待，平安喜乐",
+        "记得多喝水，补充水分哦"
+      ]
+    };
+
+    // 前缀符号
+    const prefixes = {
+      nezha: "🔥",
+      gangjing: "💥",
+      normal: "💌"
+    };
+
+    let currentCharacter = null;
+    let popupInterval = null;
+    let checkInterval = null;
+    const targetFillRate = 0.7; // 目标填充率70%
+    let popups = []; // 存储所有弹窗元素
+
+    // 选择性格后初始化
+    document.querySelectorAll('.char-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        currentCharacter = this.getAttribute('data-character');
+        // 隐藏选择框
+        document.getElementById('selectorContainer').style.opacity = 0;
+        setTimeout(() => {
+          document.getElementById('selectorContainer').remove();
+          // 设置页面模式
+          document.body.classList.add(`${currentCharacter}mode`);
+          // 开始生成弹窗
+          startPopupSystem();
+        }, 300);
+      });
+    });
+
+    // 创建弹窗
     function createPopup() {
-      const popup = document.createElement("div");
-      popup.className = "popup";
+      if (!currentCharacter) return;
+
+      const popup = document.createElement('div');
+      popup.className = 'popup';
       
-      // 随机选择祝福语
-      const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+      // 随机选择语录
+      const quoteList = quotes[currentCharacter];
+      const randomQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
       
-      // 随机渐变背景（这里简化为几种预设渐变）
-      const gradients = [
-        "linear-gradient(135deg, #ffd1dc, #fce4ec)",
-        "linear-gradient(135deg, #d1f5ff, #e0f7fa)",
-        "linear-gradient(135deg, #d1ffd9, #e8f5e9)",
-        "linear-gradient(135deg, #fff3e0, #ffe0b2)",
-      ];
-      const randomGrad = gradients[Math.floor(Math.random() * gradients.length)];
-      popup.style.background = randomGrad;
+      // 设置内容
+      popup.innerHTML = `<span class="prefix">${prefixes[currentCharacter]}</span>${randomQuote}`;
       
-      // 组装弹窗内容
-      popup.innerHTML = `
-        <div class="title">提示</div>
-        <div class="content">${randomMsg}</div>
-      `;
+      // 随机位置
+      const maxLeft = window.innerWidth - 240;
+      const maxTop = window.innerHeight - 80;
+      const left = Math.random() * maxLeft;
+      const top = Math.random() * maxTop;
       
-      // 随机位置（基于页面宽度和高度）
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-      const left = Math.random() * (screenWidth - 200); // 弹窗宽度约200px，避免超出
-      const top = Math.random() * (screenHeight - 100); // 弹窗高度约80px，避免超出
       popup.style.left = `${left}px`;
       popup.style.top = `${top}px`;
       
+      // 添加到页面
       document.body.appendChild(popup);
+      popups.push(popup);
       
-      // 5秒后移除弹窗（与动画时长一致）
-      setTimeout(() => {
-        popup.remove();
-      }, 5500);
+      // 监听动画结束
+      popup.addEventListener('animationend', function(e) {
+        if (e.animationName === 'fadeOut') {
+          popup.remove();
+          // 从数组中移除
+          popups = popups.filter(p => p !== popup);
+        }
+      });
     }
 
-    // 每隔1.5秒生成一个新弹窗
-    setInterval(createPopup, 150);
-    
-    // 页面加载时立即生成一个弹窗
-    window.onload = createPopup;
+    // 计算当前填充率
+    function calculateFillRate() {
+      if (popups.length === 0) return 0;
+      
+      const screenArea = window.innerWidth * window.innerHeight;
+      let totalPopupArea = 0;
+      
+      popups.forEach(popup => {
+        const rect = popup.getBoundingClientRect();
+        totalPopupArea += rect.width * rect.height;
+      });
+      
+      return totalPopupArea / screenArea;
+    }
+
+    // 调整弹窗生成和消失
+    function adjustPopupFlow() {
+      const currentFillRate = calculateFillRate();
+      
+      // 清除现有定时器
+      if (popupInterval) clearInterval(popupInterval);
+      
+      // 根据填充率调整生成速度
+      let generateSpeed;
+      if (currentFillRate < targetFillRate * 0.7) {
+        // 填充不足70%，快速生成
+        generateSpeed = 100;
+      } else if (currentFillRate < targetFillRate * 0.9) {
+        // 填充接近目标，中等速度
+        generateSpeed = 300;
+      } else if (currentFillRate < targetFillRate) {
+        // 即将达到目标，慢速生成
+        generateSpeed = 600;
+      } else {
+        // 超过目标，开始移除部分弹窗
+        generateSpeed = 1000;
+        removeExcessPopups(currentFillRate);
+      }
+      
+      // 设置新的生成定时器
+      popupInterval = setInterval(createPopup, generateSpeed);
+    }
+
+    // 移除多余的弹窗
+    function removeExcessPopups(currentFillRate) {
+      // 计算需要移除的弹窗数量
+      const excessRatio = currentFillRate / targetFillRate;
+      const removeCount = Math.ceil(popups.length * (excessRatio - 1) * 2);
+      
+      if (removeCount > 0 && popups.length > 0) {
+        // 随机移除指定数量的弹窗
+        for (let i = 0; i < removeCount; i++) {
+          if (popups.length === 0) break;
+          const randomIndex = Math.floor(Math.random() * popups.length);
+          const popupToRemove = popups[randomIndex];
+          popupToRemove.classList.add('fade-out');
+        }
+      }
+    }
+
+    // 启动弹窗系统
+    function startPopupSystem() {
+      // 初始生成一些弹窗
+      for (let i = 0; i < 5; i++) {
+        createPopup();
+      }
+      
+      // 启动调整机制
+      checkInterval = setInterval(adjustPopupFlow, 500);
+    }
+
+    // 窗口大小改变时重新调整
+    window.addEventListener('resize', adjustPopupFlow);
   </script>
 </body>
 </html>
