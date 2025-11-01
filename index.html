@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>zzzzzzzzzzzzzzzzzzzj</title>
+  <title>性格语录弹窗</title>
   <style>
     * {
       margin: 0;
@@ -15,8 +15,51 @@
     body {
       overflow: hidden;
       font-family: "Microsoft YaHei", sans-serif;
-      background-color: #f5f5f5;
       height: 100vh;
+    }
+
+    /* 系统主题适配 */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1a1a1a;
+        color: #f5f5f5;
+      }
+      .popup {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+      body.nezhamode .popup {
+        background-color: #331a22;
+        border-left: 3px solid #d946ef;
+      }
+      body.gangjingmode .popup {
+        background-color: #1a2233;
+        border-left: 3px solid #6366f1;
+      }
+      body.normalmode .popup {
+        background-color: #1a3322;
+        border-left: 3px solid #10b981;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+      }
+      .popup {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      body.nezhamode .popup {
+        background-color: #fff0f5;
+        border-left: 3px solid #f472b6;
+      }
+      body.gangjingmode .popup {
+        background-color: #e0efff;
+        border-left: 3px solid #60a5fa;
+      }
+      body.normalmode .popup {
+        background-color: #e0ffe9;
+        border-left: 3px solid #4ade80;
+      }
     }
 
     /* 性格选择框样式 */
@@ -29,15 +72,36 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(255, 255, 255, 0.9);
       z-index: 1000;
+    }
+    @media (prefers-color-scheme: dark) {
+      .selector-container {
+        background-color: rgba(26, 26, 26, 0.9);
+      }
+      .character-selector {
+        background: #2a2a2a;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      .selector-title, .char-btn {
+        color: #f5f5f5;
+      }
+    }
+    @media (prefers-color-scheme: light) {
+      .selector-container {
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+      .character-selector {
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      .selector-title, .char-btn {
+        color: #333;
+      }
     }
 
     .character-selector {
-      background: white;
       padding: 30px 40px;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       text-align: center;
       max-width: 380px;
       width: 90%;
@@ -46,7 +110,6 @@
     .selector-title {
       font-size: 22px;
       font-weight: 600;
-      color: #333;
       margin-bottom: 25px;
     }
 
@@ -63,7 +126,6 @@
       font-size: 16px;
       font-weight: 500;
       cursor: pointer;
-      color: #333;
       background: linear-gradient(135deg, var(--light), var(--lighter));
       box-shadow: 0 4px 12px var(--shadow);
     }
@@ -74,17 +136,32 @@
       --lighter: #fff0f5;
       --shadow: rgba(255, 105, 135, 0.15);
     }
-
     .char-btn.gangjingcolor {
       --light: #e0efff;
       --lighter: #f0f8ff;
       --shadow: rgba(96, 165, 250, 0.15);
     }
-
     .char-btn.normalcolor {
       --light: #e0ffe9;
       --lighter: #f0fff5;
       --shadow: rgba(74, 222, 128, 0.15);
+    }
+    @media (prefers-color-scheme: dark) {
+      .char-btn.nezhacolor {
+        --light: #331a22;
+        --lighter: #442233;
+        --shadow: rgba(217, 70, 239, 0.2);
+      }
+      .char-btn.gangjingcolor {
+        --light: #1a2233;
+        --lighter: #223344;
+        --shadow: rgba(99, 102, 241, 0.2);
+      }
+      .char-btn.normalcolor {
+        --light: #1a3322;
+        --lighter: #224433;
+        --shadow: rgba(16, 185, 129, 0.2);
+      }
     }
 
     .char-btn:hover {
@@ -92,21 +169,21 @@
       box-shadow: 0 6px 16px var(--shadow);
     }
 
-    /* 弹窗样式 */
+    /* 弹窗样式（缩小尺寸） */
     .popup {
       position: absolute;
-      border-radius: 8px;
-      padding: 10px 16px;
-      max-width: 220px;
-      font-size: 14px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      padding: 6px 10px;
+      max-width: 140px; /* 缩小后宽度 */
+      font-size: 11px; /* 缩小字体 */
+      line-height: 1.4;
       opacity: 0;
       animation: fadeIn 0.3s forwards;
     }
 
     .popup .prefix {
-      font-size: 12px;
-      margin-right: 5px;
+      font-size: 9px;
+      margin-right: 3px;
       vertical-align: middle;
     }
 
@@ -114,7 +191,7 @@
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(10px) scale(0.95);
+        transform: translateY(6px) scale(0.92);
       }
       to {
         opacity: 1;
@@ -123,10 +200,6 @@
     }
 
     /* 弹窗淡出动画 */
-    .popup.fade-out {
-      animation: fadeOut 0.5s forwards;
-    }
-
     @keyframes fadeOut {
       from {
         opacity: 1;
@@ -134,42 +207,12 @@
       }
       to {
         opacity: 0;
-        transform: translateY(-10px) scale(0.95);
+        transform: translateY(-6px) scale(0.92);
       }
     }
 
-    /* 三种性格的配色体系 */
-    /* 哪吒：粉系 */
-    body.nezhamode {
-      background-color: #fff5f7;
-    }
-
-    body.nezhamode .popup {
-      background-color: #fff0f5;
-      color: #d946ef;
-      border-left: 3px solid #f472b6;
-    }
-
-    /* 杠精：蓝系 */
-    body.gangjingmode {
-      background-color: #f0f8ff;
-    }
-
-    body.gangjingmode .popup {
-      background-color: #e0efff;
-      color: #6366f1;
-      border-left: 3px solid #60a5fa;
-    }
-
-    /* 普通人：绿系 */
-    body.normalmode {
-      background-color: #f0fff5;
-    }
-
-    body.normalmode .popup {
-      background-color: #e0ffe9;
-      color: #10b981;
-      border-left: 3px solid #4ade80;
+    .popup.fade-out {
+      animation: fadeOut 0.4s forwards;
     }
   </style>
 </head>
@@ -251,9 +294,10 @@
 
     let currentCharacter = null;
     let popupInterval = null;
-    let checkInterval = null;
-    const targetFillRate = 0.7; // 目标填充率70%
-    let popups = []; // 存储所有弹窗元素
+    let popups = []; // 存储所有弹窗（按生成顺序排列，先入先出）
+    const maxFillRate = 98; // 最大填充率98%
+    const maxOverlapRatio = 0.5; // 最大重叠比例50%
+    const popupSize = { width: 140, height: 50 }; // 弹窗固定尺寸（与CSS匹配）
 
     // 选择性格后初始化
     document.querySelectorAll('.char-btn').forEach(btn => {
@@ -271,7 +315,73 @@
       });
     });
 
-    // 创建弹窗
+    // 计算两个矩形的重叠比例（新弹窗面积为基准）
+    function calculateOverlapRatio(newRect, existingRect) {
+      // 计算交集区域
+      const overlapLeft = Math.max(newRect.left, existingRect.left);
+      const overlapTop = Math.max(newRect.top, existingRect.top);
+      const overlapRight = Math.min(newRect.right, existingRect.right);
+      const overlapBottom = Math.min(newRect.bottom, existingRect.bottom);
+
+      // 无重叠
+      if (overlapLeft >= overlapRight || overlapTop >= overlapBottom) {
+        return 0;
+      }
+
+      // 计算重叠面积和新弹窗面积
+      const overlapArea = (overlapRight - overlapLeft) * (overlapBottom - overlapTop);
+      const newPopupArea = (newRect.right - newRect.left) * (newRect.bottom - newRect.top);
+
+      // 返回重叠比例（不超过100%）
+      return Math.min(1, overlapArea / newPopupArea);
+    }
+
+    // 检查新弹窗位置是否符合重叠要求
+    function isPositionValid(newRect) {
+      // 遍历已有弹窗，检查是否有超过50%的重叠
+      for (const item of popups) {
+        const existingRect = item.element.getBoundingClientRect();
+        const overlapRatio = calculateOverlapRatio(newRect, existingRect);
+        if (overlapRatio > maxOverlapRatio) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // 生成有效位置（避免过度重叠）
+    function getValidPosition() {
+      const maxLeft = window.innerWidth - popupSize.width;
+      const maxTop = window.innerHeight - popupSize.height;
+      const maxAttempts = 30; // 尝试次数，确保能找到有效位置
+
+      for (let i = 0; i < maxAttempts; i++) {
+        // 随机生成位置
+        const left = Math.random() * maxLeft;
+        const top = Math.random() * maxTop;
+
+        // 构建新弹窗的矩形区域
+        const newRect = {
+          left,
+          top,
+          right: left + popupSize.width,
+          bottom: top + popupSize.height
+        };
+
+        // 检查位置是否有效
+        if (isPositionValid(newRect)) {
+          return { left, top };
+        }
+      }
+
+      // 多次尝试失败后，返回随机位置（避免卡死）
+      return {
+        left: Math.random() * maxLeft,
+        top: Math.random() * maxTop
+      };
+    }
+
+    // 创建弹窗（记录生成顺序，避免过度重叠）
     function createPopup() {
       if (!currentCharacter) return;
 
@@ -285,25 +395,24 @@
       // 设置内容
       popup.innerHTML = `<span class="prefix">${prefixes[currentCharacter]}</span>${randomQuote}`;
       
-      // 随机位置
-      const maxLeft = window.innerWidth - 240;
-      const maxTop = window.innerHeight - 80;
-      const left = Math.random() * maxLeft;
-      const top = Math.random() * maxTop;
-      
+      // 获取有效位置（避免重叠超过50%）
+      const { left, top } = getValidPosition();
       popup.style.left = `${left}px`;
       popup.style.top = `${top}px`;
       
-      // 添加到页面
+      // 添加到页面和数组（新弹窗追加到末尾）
       document.body.appendChild(popup);
-      popups.push(popup);
+      popups.push({
+        element: popup,
+        createTime: Date.now()
+      });
       
       // 监听动画结束
       popup.addEventListener('animationend', function(e) {
         if (e.animationName === 'fadeOut') {
           popup.remove();
-          // 从数组中移除
-          popups = popups.filter(p => p !== popup);
+          // 从数组中移除（对应先生成的元素）
+          popups = popups.filter(item => item.element !== popup);
         }
       });
     }
@@ -315,72 +424,61 @@
       const screenArea = window.innerWidth * window.innerHeight;
       let totalPopupArea = 0;
       
-      popups.forEach(popup => {
-        const rect = popup.getBoundingClientRect();
+      popups.forEach(item => {
+        const rect = item.element.getBoundingClientRect();
         totalPopupArea += rect.width * rect.height;
       });
       
-      return totalPopupArea / screenArea;
+      return (totalPopupArea / screenArea) * 100;
     }
 
-    // 调整弹窗生成和消失
-    function adjustPopupFlow() {
+    // 移除多余弹窗（仅删先生成的，保留新生成的）
+    function removeExcessPopups() {
       const currentFillRate = calculateFillRate();
-      
-      // 清除现有定时器
-      if (popupInterval) clearInterval(popupInterval);
-      
-      // 根据填充率调整生成速度
-      let generateSpeed;
-      if (currentFillRate < targetFillRate * 0.7) {
-        // 填充不足70%，快速生成
-        generateSpeed = 100;
-      } else if (currentFillRate < targetFillRate * 0.9) {
-        // 填充接近目标，中等速度
-        generateSpeed = 300;
-      } else if (currentFillRate < targetFillRate) {
-      //  // 即将达到目标，慢速生成
-      //  generateSpeed = 600;
-      //} else {
-      //  // 超过目标，开始移除部分弹窗
-      //  generateSpeed = 1000;
-      //  removeExcessPopups(currentFillRate);
-      //}
-      
-      // 设置新的生成定时器
-      popupInterval = setInterval(createPopup, generateSpeed);
-    }
-
-    // 移除多余的弹窗
-    function removeExcessPopups(currentFillRate) {
-      // 计算需要移除的弹窗数量
-      const excessRatio = currentFillRate / targetFillRate;
-      const removeCount = Math.ceil(popups.length * (excessRatio - 1) * 2);
-      
-      if (removeCount > 0 && popups.length > 0) {
-        // 随机移除指定数量的弹窗
-        for (let i = 0; i < removeCount; i++) {
-          if (popups.length === 0) break;
-          const randomIndex = Math.floor(Math.random() * popups.length);
-          const popupToRemove = popups[randomIndex];
-          popupToRemove.classList.add('fade-out');
+      if (currentFillRate >= maxFillRate) {
+        // 计算需要移除的弹窗数量（按超出比例计算）
+        const excessRatio = currentFillRate / maxFillRate;
+        const removeCount = Math.ceil(popups.length * (excessRatio - 1) * 1.5); // 平衡移除数量
+        
+        if (removeCount > 0 && popups.length > 0) {
+          // 移除数组前N个（先生成的）弹窗
+          for (let i = 0; i < removeCount; i++) {
+            if (popups.length === 0) break;
+            const oldestPopup = popups[0]; // 取第一个（最早生成）
+            oldestPopup.element.classList.add('fade-out');
+          }
         }
       }
     }
 
     // 启动弹窗系统
     function startPopupSystem() {
-      // 初始生成一些弹窗
-      for (let i = 0; i < 5; i++) {
+      // 初始生成一批弹窗（快速填充）
+      for (let i = 0; i < 15; i++) {
         createPopup();
       }
       
-      // 启动调整机制
-      checkInterval = setInterval(adjustPopupFlow, 500);
+      // 持续生成弹窗并检查填充率（80ms/个，7秒内达98%）
+      popupInterval = setInterval(() => {
+        createPopup();
+        removeExcessPopups();
+      }, 80);
     }
 
-    // 窗口大小改变时重新调整
-    window.addEventListener('resize', adjustPopupFlow);
+    // 窗口大小改变时重新调整弹窗位置
+    window.addEventListener('resize', () => {
+      popups.forEach(item => {
+        const popup = item.element;
+        const rect = popup.getBoundingClientRect();
+        const maxLeft = window.innerWidth - popupSize.width;
+        const maxTop = window.innerHeight - popupSize.height;
+        const left = Math.min(rect.left, maxLeft);
+        const top = Math.min(rect.top, maxTop);
+        popup.style.left = `${left}px`;
+        popup.style.top = `${top}px`;
+      });
+      removeExcessPopups(); // 窗口变化后重新检查填充率
+    });
   </script>
 </body>
 </html>
