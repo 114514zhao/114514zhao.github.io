@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>神秘万圣节礼物·祝福语弹窗</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #f0f2f5;
+      overflow: hidden; /* 隐藏超出页面的弹窗 */
+    }
+    .popup {
+      position: absolute;
+      background: linear-gradient(135deg, #ffd1dc, #d1f5ff, #d1ffd9); /* 渐变背景 */
+      border-radius: 8px;
+      padding: 12px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 0.5s ease-out forwards, fadeOut 0.5s ease-in 5s forwards; /* 弹出+消失动画 */
+    }
+    .popup .title {
+      color: #e91e63;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .popup .content {
+      font-size: 16px;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // 祝福语列表
+    const messages = [
+      "早点休息",
+      "好好爱自己",
+      "天冷了，多穿衣服",
+      "今天过得开心嘛",
+      "你超棒的",
+      "保持微笑呀",
+      "我想你了",
+      "学会爱自己，才能更好地爱别人",
+      "保持好心情",
+      "记得吃水果",
+      "你是独一无二的",
+      "今天也要加油哦",
+      "别熬夜，对身体不好",
+      "要天天开心呀",
+    ];
+
+    // 随机生成弹窗的位置、颜色和内容
+    function createPopup() {
+      const popup = document.createElement("div");
+      popup.className = "popup";
+      
+      // 随机选择祝福语
+      const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+      
+      // 随机渐变背景（这里简化为几种预设渐变）
+      const gradients = [
+        "linear-gradient(135deg, #ffd1dc, #fce4ec)",
+        "linear-gradient(135deg, #d1f5ff, #e0f7fa)",
+        "linear-gradient(135deg, #d1ffd9, #e8f5e9)",
+        "linear-gradient(135deg, #fff3e0, #ffe0b2)",
+      ];
+      const randomGrad = gradients[Math.floor(Math.random() * gradients.length)];
+      popup.style.background = randomGrad;
+      
+      // 组装弹窗内容
+      popup.innerHTML = `
+        <div class="title">提示</div>
+        <div class="content">${randomMsg}</div>
+      `;
+      
+      // 随机位置（基于页面宽度和高度）
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const left = Math.random() * (screenWidth - 200); // 弹窗宽度约200px，避免超出
+      const top = Math.random() * (screenHeight - 100); // 弹窗高度约80px，避免超出
+      popup.style.left = `${left}px`;
+      popup.style.top = `${top}px`;
+      
+      document.body.appendChild(popup);
+      
+      // 5秒后移除弹窗（与动画时长一致）
+      setTimeout(() => {
+        popup.remove();
+      }, 5500);
+    }
+
+    // 每隔1.5秒生成一个新弹窗
+    setInterval(createPopup, 150);
+    
+    // 页面加载时立即生成一个弹窗
+    window.onload = createPopup;
+  </script>
+</body>
+</html>
