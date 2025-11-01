@@ -339,13 +339,13 @@
         // 填充接近目标，中等速度
         generateSpeed = 300;
       } else if (currentFillRate < targetFillRate) {
-        // 即将达到目标，慢速生成
-        generateSpeed = 600;
-      } else {
-        // 超过目标，开始移除部分弹窗
-        generateSpeed = 1000;
-        removeExcessPopups(currentFillRate);
-      }
+      //  // 即将达到目标，慢速生成
+      //  generateSpeed = 600;
+      //} else {
+      //  // 超过目标，开始移除部分弹窗
+      //  generateSpeed = 1000;
+      //  removeExcessPopups(currentFillRate);
+      //}
       
       // 设置新的生成定时器
       popupInterval = setInterval(createPopup, generateSpeed);
